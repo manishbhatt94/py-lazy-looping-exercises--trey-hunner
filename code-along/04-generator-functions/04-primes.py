@@ -17,7 +17,7 @@ def get_big_primes(limit):
     count = 0
     while count < limit:
         if is_prime(n):
-            print("found prime: {}".format(n))
+            print(f"found prime: {n}")
             yield n
             count += 1
         n += 1
@@ -30,5 +30,5 @@ def main():
         print(prime)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

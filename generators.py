@@ -13,17 +13,27 @@ def all_together(*iterables):
     return ( item for iterable in iterables for item in iterable )
 
 
+# def interleave(iterable1, iterable2):
+#     """Return iterable of one item at a time from each list."""
+#     sentinel = object()
+#     return (
+#         item
+#         for pair in zip_longest(iterable1, iterable2, fillvalue=sentinel)
+#         # Previously (for simple test cases where iterable lengths were same):
+#         # for pair in zip(iterable1, iterable2)
+#         for item in pair
+#         if item is not sentinel
+#     )
+
+
 def interleave(iterable1, iterable2):
     """Return iterable of one item at a time from each list."""
     sentinel = object()
-    return (
-        item
-        for pair in zip_longest(iterable1, iterable2, fillvalue=sentinel)
-        # Previously (for simple test cases where iterable lengths were same):
-        # for pair in zip(iterable1, iterable2)
-        for item in pair
-        if item is not sentinel
-    )
+    for one, two in zip_longest(iterable1, iterable2, fillvalue=sentinel):
+        if one is not sentinel:
+            yield one
+        if two is not sentinel:
+            yield two
 
 
 # def deep_add(iterable):
