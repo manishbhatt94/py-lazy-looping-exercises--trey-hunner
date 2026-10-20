@@ -1,22 +1,22 @@
 """Test for generator function exercises"""
-from collections.abc import Generator
+
 import sys
 import unittest
+from collections.abc import Generator
 
 from functions import (
-    unique,
+    around,
+    deep_flatten,
     float_range,
+    get_primes_over,
     head,
     pairwise,
-    around,
     stop_on,
-    deep_flatten,
-    get_primes_over,
+    unique,
 )
 
 
 class UniqueTests(unittest.TestCase):
-
     """Tests for unique."""
 
     def test_list_with_duplicates(self):
@@ -28,36 +28,32 @@ class UniqueTests(unittest.TestCase):
         self.assertEqual(list(unique([])), [])
 
     def test_string(self):
-        self.assertEqual(''.join(unique("hello there")), 'helo tr')
+        self.assertEqual("".join(unique("hello there")), "helo tr")
 
 
 class FloatRangeTests(unittest.TestCase):
-
     """Tests for float_range."""
 
     def test_has_iterability(self):
         self.assertEqual(list(float_range(1, 11, 2)), [1, 3, 5, 7, 9])
         self.assertEqual(
             list(float_range(0.5, 7, 0.75)),
-            [0.5, 1.25, 2.0, 2.75, 3.5, 4.25, 5.0, 5.75, 6.5]
+            [0.5, 1.25, 2.0, 2.75, 3.5, 4.25, 5.0, 5.75, 6.5],
         )
 
     def test_optional_step(self):
         self.assertEqual(list(float_range(1, 6, 1)), [1, 2, 3, 4, 5])
         self.assertEqual(list(float_range(1, 6)), [1, 2, 3, 4, 5])
-        self.assertEqual(
-            list(float_range(0.5, 6)),
-            [0.5, 1.5, 2.5, 3.5, 4.5, 5.5]
-        )
+        self.assertEqual(list(float_range(0.5, 6)), [0.5, 1.5, 2.5, 3.5, 4.5, 5.5])
 
     def test_fractional_step_size(self):
         self.assertEqual(
             list(float_range(1, 6, 0.5)),
-            [1, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5]
+            [1, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5],
         )
         self.assertEqual(
             list(float_range(1, 5.6, 0.5)),
-            [1, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5]
+            [1, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5],
         )
 
     def test_no_arguments(self):
@@ -76,12 +72,11 @@ class FloatRangeTests(unittest.TestCase):
         if isinstance(response, Generator):
             next(response)
             size = sum(
-                sys.getsizeof(obj)
-                for obj in response.gi_frame.f_locals.values()
+                sys.getsizeof(obj) for obj in response.gi_frame.f_locals.values()
             )
         else:
             size = sys.getsizeof(response)
-        self.assertLess(size, 8000, 'Too much memory used')
+        self.assertLess(size, 8000, "Too much memory used")
         self.assertNotEqual(type(response), list)
         self.assertNotEqual(type(response), tuple)
 
@@ -98,7 +93,6 @@ class FloatRangeTests(unittest.TestCase):
 
 
 class HeadTests(unittest.TestCase):
-
     """Tests for head."""
 
     def test_first_two(self):
@@ -113,7 +107,6 @@ class HeadTests(unittest.TestCase):
 
 
 class PairwiseTests(unittest.TestCase):
-
     """Tests for pairwise."""
 
     def test_three(self):
@@ -127,7 +120,7 @@ class PairwiseTests(unittest.TestCase):
     def test_one_item(self):
         self.assertEqual(list(pairwise([1])), [(1, None)])
 
-    @unittest.skip
+    # @unittest.skip
     def test_none(self):
         inputs = [None, None]
         outputs = [(None, None), (None, None)]
@@ -135,12 +128,11 @@ class PairwiseTests(unittest.TestCase):
 
     def test_string(self):
         inputs = "hey"
-        outputs = [('h', 'e'), ('e', 'y'), ('y', None)]
+        outputs = [("h", "e"), ("e", "y"), ("y", None)]
         self.assertEqual(list(pairwise(inputs)), outputs)
 
 
 class AroundTests(unittest.TestCase):
-
     """Tests for around."""
 
     def test_four(self):
@@ -154,7 +146,7 @@ class AroundTests(unittest.TestCase):
     def test_one_item(self):
         self.assertEqual(list(around([1])), [(None, 1, None)])
 
-    @unittest.skip
+    # @unittest.skip
     def test_none(self):
         inputs = [None, None]
         outputs = [(None, None, None), (None, None, None)]
@@ -162,19 +154,18 @@ class AroundTests(unittest.TestCase):
 
     def test_string(self):
         inputs = "hey"
-        outputs = [(None, 'h', 'e'), ('h', 'e', 'y'), ('e', 'y', None)]
+        outputs = [(None, "h", "e"), ("h", "e", "y"), ("e", "y", None)]
         self.assertEqual(list(around(inputs)), outputs)
 
 
 class StopOnTests(unittest.TestCase):
-
     """Tests for stop_on."""
 
     def test_last_item(self):
         self.assertEqual(list(stop_on([1, 2, 3], 3)), [1, 2])
 
     def test_first_item(self):
-        self.assertEqual(list(stop_on([1, 2, 3], 1)), [])
+        self.assertEqual(C, [])
 
     def test_not_in(self):
         self.assertEqual(list(stop_on([1, 2, 3], 4)), [1, 2, 3])
@@ -184,7 +175,6 @@ class StopOnTests(unittest.TestCase):
 
 
 class DeepFlattenTests(unittest.TestCase):
-
     """Tests for deep_flatten."""
 
     def test_deep_lists(self):
@@ -197,12 +187,21 @@ class DeepFlattenTests(unittest.TestCase):
 
 
 class GetPrimesOverTests(unittest.TestCase):
-
     """Tests for get_primes_over."""
 
     def test_10_primes_over_one_million(self):
-        ten_primes = [1000003, 1000033, 1000037, 1000039, 1000081,
-                      1000099, 1000117, 1000121, 1000133, 1000151]
+        ten_primes = [
+            1000003,
+            1000033,
+            1000037,
+            1000039,
+            1000081,
+            1000099,
+            1000117,
+            1000121,
+            1000133,
+            1000151,
+        ]
         self.assertSequenceEqual(list(get_primes_over(10)), ten_primes)
 
     def test_first_prime_over_one_million(self):
@@ -211,4 +210,5 @@ class GetPrimesOverTests(unittest.TestCase):
 
 if __name__ == "__main__":
     from helpers import error_message
+
     error_message()
