@@ -1,6 +1,7 @@
 """Generator Function Exercises."""
 
-import math
+from itertools import count, islice, takewhile
+from math import ceil, isqrt
 
 
 def unique(iterable):
@@ -92,7 +93,7 @@ class float_range:
             return 0
         if self.step < 0 and self.start <= self.stop:
             return 0
-        return math.ceil((self.stop - self.start) / self.step)
+        return ceil((self.stop - self.start) / self.step)
 
 
 # =%=%=%=%=%=%=%=%=%=%=%=%   END float_range    =%=%=%=%=%=%=%=%=%=%=%=%=%=%=%=
@@ -110,14 +111,19 @@ class float_range:
 #         consumed += 1
 
 
+# def head(iterable, *, n):
+#     """Return first n items of a given iterable."""
+#     if n < 1:
+#         return
+#     for index, item in enumerate(iterable):
+#         if index == n:
+#             break
+#         yield item
+
+
 def head(iterable, *, n):
     """Return first n items of a given iterable."""
-    if n < 1:
-        return
-    for index, item in enumerate(iterable):
-        if index == n:
-            break
-        yield item
+    return islice(iterable, n)
 
 
 # def pairwise(iterable):
@@ -207,12 +213,17 @@ def around(iterable):
     yield (prev_item, current_item, None)
 
 
+# def stop_on(iterable, key):
+#     """Yield from the iterable until the given value is reached."""
+#     for item in iterable:
+#         if item == key:
+#             break
+#         yield item
+
+
 def stop_on(iterable, key):
     """Yield from the iterable until the given value is reached."""
-    for item in iterable:
-        if item == key:
-            break
-        yield item
+    return takewhile(lambda x: x != key, iterable)
 
 
 def deep_flatten(iterable):
@@ -226,5 +237,41 @@ def deep_flatten(iterable):
             yield from deep_flatten(iterator)
 
 
-def get_primes_over():
+# def get_primes_over(limit):
+#     """Return given number of primes over 1,000,000."""
+#     num_primes_found = 0
+#     candidate = 1_000_000 + 1
+#     while num_primes_found < limit:
+#         if is_prime(candidate):
+#             num_primes_found += 1
+#             yield candidate
+#         candidate += 2
+
+
+def get_primes_over(limit):
     """Return given number of primes over 1,000,000."""
+    candidates = count(1_000_001, 2)
+    primes = filter(is_prime, candidates)
+    return islice(primes, limit)
+
+
+# def get_primes_over(limit):
+#     """Return given number of primes over 1,000,000."""
+#     return islice(
+#         (candidate for candidate in count(1_000_001, 2) if is_prime(candidate)), limit
+#     )
+
+
+# def is_prime(candidate):
+#     if candidate < 2:
+#         return False
+#     for n in range(2, isqrt(candidate) + 1):
+#         if candidate % n == 0:
+#             return False
+#     return True
+
+
+def is_prime(candidate):
+    if candidate < 2:
+        return False
+    return all(candidate % n for n in range(2, isqrt(candidate) + 1))

@@ -1,5 +1,6 @@
 """Generator Expression Exercises."""
-from itertools import zip_longest
+
+from itertools import chain, zip_longest
 from math import isqrt
 
 
@@ -8,9 +9,14 @@ def sum_all(matrix):
     return sum(num for row in matrix for num in row)
 
 
+# def all_together(*iterables):
+#     """String together all items from the given iterables."""
+#     return (item for iterable in iterables for item in iterable)
+
+
 def all_together(*iterables):
     """String together all items from the given iterables."""
-    return ( item for iterable in iterables for item in iterable )
+    return chain.from_iterable(iterables)
 
 
 # def interleave(iterable1, iterable2):
@@ -46,11 +52,11 @@ def interleave(iterable1, iterable2):
 #             total += item
 #     return total
 
+
 def deep_add(iterable):
     """Return sum of values in given iterable, iterating deeply."""
     return sum(
-        deep_add(item) if hasattr(item, "__iter__") else item
-        for item in iterable
+        deep_add(item) if hasattr(item, "__iter__") else item for item in iterable
     )
 
 
@@ -81,6 +87,5 @@ def parse_ranges(string):
 def is_prime(candidate):
     """Return True if candidate number is prime."""
     return candidate >= 2 and all(
-        candidate % divisor != 0
-        for divisor in range(2, isqrt(candidate) + 1)
+        candidate % divisor != 0 for divisor in range(2, isqrt(candidate) + 1)
     )

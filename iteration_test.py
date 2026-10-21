@@ -1,11 +1,11 @@
 """Test for itertools exercises"""
+
 import unittest
 
-from iteration import total_length, lstrip
+from iteration import lstrip, total_length
 
 
 class TotalLengthTests(unittest.TestCase):
-
     """Tests for total_length."""
 
     def test_list(self):
@@ -19,7 +19,6 @@ class TotalLengthTests(unittest.TestCase):
 
 
 class LStripTests(unittest.TestCase):
-
     """Tests for lstrip."""
 
     def assertIterableEqual(self, iterable1, iterable2):
@@ -32,7 +31,7 @@ class LStripTests(unittest.TestCase):
         self.assertIterableEqual(lstrip([1, 2, 3], 0), [1, 2, 3])
 
     def test_string(self):
-        self.assertIterableEqual(lstrip('  hello', ' '), 'hello')
+        self.assertIterableEqual(lstrip("  hello", " "), "hello")
 
     def test_empty_iterable(self):
         self.assertIterableEqual(lstrip([], 1), [])
@@ -54,4 +53,5 @@ class LStripTests(unittest.TestCase):
 
 if __name__ == "__main__":
     from helpers import error_message
+
     error_message()

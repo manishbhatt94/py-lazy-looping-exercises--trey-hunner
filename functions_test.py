@@ -10,6 +10,7 @@ from functions import (
     float_range,
     get_primes_over,
     head,
+    is_prime,
     pairwise,
     stop_on,
     unique,
@@ -165,7 +166,7 @@ class StopOnTests(unittest.TestCase):
         self.assertEqual(list(stop_on([1, 2, 3], 3)), [1, 2])
 
     def test_first_item(self):
-        self.assertEqual(C, [])
+        self.assertEqual(list(stop_on([1, 2, 3], 1)), [])
 
     def test_not_in(self):
         self.assertEqual(list(stop_on([1, 2, 3], 4)), [1, 2, 3])
@@ -184,6 +185,25 @@ class DeepFlattenTests(unittest.TestCase):
 
     def test_empty_deep_list(self):
         self.assertEqual(list(deep_flatten([[()]])), [])
+
+
+class IsPrimeTests(unittest.TestCase):
+    """Tests for is_prime."""
+
+    def test_numbers_less_than_two_are_not_prime(self):
+        for candidate in (-10, -1, 0, 1):
+            with self.subTest(candidate=candidate):
+                self.assertFalse(is_prime(candidate))
+
+    def test_primes(self):
+        for candidate in (2, 3, 5, 7, 97, 997):
+            with self.subTest(candidate=candidate):
+                self.assertTrue(is_prime(candidate))
+
+    def test_composites(self):
+        for candidate in (4, 6, 9, 25, 49, 100, 121):
+            with self.subTest(candidate=candidate):
+                self.assertFalse(is_prime(candidate))
 
 
 class GetPrimesOverTests(unittest.TestCase):
